@@ -43,11 +43,11 @@ export interface EhrPlugin {
   }): Promise<null>;
 
   queryClinicalSampleType(options: {
-    sampleType: [HKClinicalSampleType]
+    sampleType: HKClinicalSampleType
   }): Promise<[HKClinicalRecord]>;
 
   getRequestStatusForAuthorization(options: {
     writePermissions: [HKClinicalSampleType],
     readPermissions: [HKClinicalSampleType]
-  }): Promise<ClinicalRecordAuthorization>;
+  }): Promise<{status: ClinicalRecordAuthorization}>;
 }
