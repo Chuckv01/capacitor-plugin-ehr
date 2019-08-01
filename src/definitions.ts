@@ -44,7 +44,7 @@ export interface EhrPlugin {
 
   queryClinicalSampleType(options: {
     sampleType: HKClinicalSampleType
-  }): Promise<[HKClinicalRecord]>;
+  }): Promise<{records: [HKClinicalRecord]}>;
 
   getRequestStatusForAuthorization(options: {
     writePermissions: [HKClinicalSampleType],

@@ -1,6 +1,6 @@
 {
   "name": "capacitor-plugin-ehr",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Ionic Capacitor plugin to access iOS Clinical Records (FHIR)",
   "main": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
