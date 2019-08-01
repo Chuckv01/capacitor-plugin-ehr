@@ -14,9 +14,13 @@ Ionic Capacitor plugin to access iOS Clinical Records (FHIR). iOS only.
 ## Usage
 
 ```ts
-import { EhrPlugin } from 'capacitor-plugin-ehr';
+import { Injectable } from '@angular/core';
+import { EhrPlugin, ClinicalRecordAuthorization, HKClinicalRecord, HKClinicalSampleType } from 'capacitor-plugin-ehr';
 declare var Capacitor;
 
+@Injectable({
+  providedIn: 'root'
+})
 export class HealthkitService {
   public ehrPlugin: EhrPlugin = Capacitor.Plugins.EhrPlugin as any;
 
