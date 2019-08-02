@@ -34,6 +34,7 @@ export interface FHIRResource {
   sourceURL: string;
   displayName: string;
   identifier: number;
+  recorder: any;
 }
 
 export interface EhrPlugin {
