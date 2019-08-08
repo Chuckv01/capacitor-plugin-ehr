@@ -10,10 +10,10 @@ public class EhrPlugin: CAPPlugin {
     @available(iOS 12.0, *)
     @objc func authorize(_ call: CAPPluginCall) {
         if HKHealthStore.isHealthDataAvailable() {
-            let readTypes: Set<HKClinicalType> = self.getHealthTypes(call, key: "readPermissions")
-            let writeTypes: Set<HKClinicalType> = self.getHealthTypes(call, key: "writePermissions")
+            let readTypes: Set<HKObjectType> = self.getHKObjectTypes(call, key: "readPermissions")
+            let writeTypes: Set<HKObjectType> = self.getHKObjectTypes(call, key: "writePermissions")
             
-            healthStore.requestAuthorization(toShare: writeTypes, read: readTypes) { (success, error) in
+            healthStore.requestAuthorization(toShare: writeTypes as! Set<HKSampleType>, read: readTypes) { (success, error) in
                 if !success {
                     call.reject("Could not get permission")
                     return
@@ -27,10 +27,10 @@ public class EhrPlugin: CAPPlugin {
     
     @available(iOS 12.0, *)
     @objc func getRequestStatusForAuthorization(_ call: CAPPluginCall) {
-        let readTypes: Set<HKClinicalType> = self.getHealthTypes(call, key: "readPermissions")
-        let writeTypes: Set<HKClinicalType> = self.getHealthTypes(call, key: "writePermissions")
+        let readTypes: Set<HKObjectType> = self.getHKObjectTypes(call, key: "readPermissions")
+        let writeTypes: Set<HKObjectType> = self.getHKObjectTypes(call, key: "writePermissions")
         
-        healthStore.getRequestStatusForAuthorization(toShare: writeTypes, read: readTypes) { (success, error) in
+        healthStore.getRequestStatusForAuthorization(toShare: writeTypes as! Set<HKSampleType>, read: readTypes) { (success, error) in
             call.resolve(["status": success.rawValue]);
         }
     }
@@ -83,12 +83,39 @@ public class EhrPlugin: CAPPlugin {
     }
     
     @available(iOS 12.0, *)
-    func getHealthTypes(_ call: CAPPluginCall, key: String) -> Set<HKClinicalType> {
+    func getHKObjectTypes(_ call: CAPPluginCall, key: String) -> Set<HKObjectType> {
         let sampleTypes = call.options[key]
-        var types = Set<HKClinicalType>([])
+        var types = Set<HKObjectType>([])
         for type in (sampleTypes as? [String])! {
-            types.insert(HKObjectType.clinicalType(forIdentifier:HKClinicalTypeIdentifier(rawValue: type))!)
+            let hkObject = self.getHKObjectFromString(type: type);
+            if (hkObject !== nil) {
+                types.insert(hkObject!)
+            }
         }
         return types
+    }
+    
+    @available(iOS 12.0, *)
+    func getHKObjectFromString(type: String) -> HKObjectType? {
+        var hkType: HKObjectType?;
+        print(type)
+        
+        hkType = HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier(rawValue: type))
+        if (hkType != nil) {
+            return hkType!;
+        }
+        
+        hkType = HKObjectType.clinicalType(forIdentifier:HKClinicalTypeIdentifier(rawValue: type))
+        if (hkType != nil) {
+            return hkType!;
+        }
+        
+        
+        hkType = HKObjectType.categoryType(forIdentifier:HKCategoryTypeIdentifier(rawValue: type))
+        if (hkType != nil) {
+            return hkType!;
+        }
+        
+        return hkType;
     }
 }

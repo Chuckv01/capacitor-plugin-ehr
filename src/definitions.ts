@@ -10,6 +10,10 @@ export enum ClinicalRecordAuthorization {
   unnecessary = 2,
 }
 
+export type HKObjectType = 
+  | 'HKQuantityTypeIdentifierStepCount'
+  | 'HKCategoryTypeIdentifierSleepAnalysis'
+
 export type HKClinicalSampleType =
   | 'HKClinicalTypeIdentifierAllergyRecord'
   | 'HKClinicalTypeIdentifierConditionRecord'
@@ -39,8 +43,8 @@ export interface FHIRResource {
 
 export interface EhrPlugin {
   authorize(options: {
-    writePermissions: [HKClinicalSampleType],
-    readPermissions: [HKClinicalSampleType]
+    writePermissions: [HKClinicalSampleType | HKObjectType],
+    readPermissions: [HKClinicalSampleType | HKObjectType]
   }): Promise<null>;
 
   queryClinicalSampleType(options: {
