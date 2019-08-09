@@ -50,8 +50,8 @@ export interface EhrPlugin {
   querySampleType(options: {
     sampleType: HKClinicalSampleType | HKObjectType,
     limit?: number,
-    startDate?: number,
-    endDate?: number
+    startDate?: Date,
+    endDate?: Date
   }): Promise<{records: [HKClinicalRecord]}>;
 
   getRequestStatusForAuthorization(options: {
