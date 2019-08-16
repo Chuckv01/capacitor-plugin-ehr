@@ -54,6 +54,18 @@ export interface EhrPlugin {
     endDate?: Date
   }): Promise<{records: [HKClinicalRecord]}>;
 
+  querySampleTypeAggregated(options: {
+    startDate: Date;
+    endDate: Date;
+    interval: number;
+    quantityType: HKObjectType;
+  }): Promise<{
+    records: [{
+      value: number,
+      date: Date
+    }];
+  }>;
+
   getRequestStatusForAuthorization(options: {
     writePermissions: [HKClinicalSampleType],
     readPermissions: [HKClinicalSampleType]
