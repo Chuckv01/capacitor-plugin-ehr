@@ -130,7 +130,7 @@ public class EhrPlugin: CAPPlugin {
                 "endDate": clinicalSample.endDate.description,
                 "uuid": clinicalSample.uuid.uuidString,
                 "metadata": clinicalSample.metadata ?? "",
-                "sourceURL": (clinicalSample.fhirResource?.sourceURL!.absoluteString)!,
+                "sourceURL": (clinicalSample.fhirResource?.sourceURL?.absoluteString) ?? "",
                 "displayName": clinicalSample.displayName,
                 "fhirResource": self.toJson(data: clinicalSample.fhirResource!.data)
             ]
